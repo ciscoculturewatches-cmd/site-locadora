@@ -1,52 +1,37 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import localFont from "next/font/local";
+import { Archivo, Roboto } from "next/font/google";
 import "./globals.css";
 
 const roboto = Roboto({
-  variable: "--font-kovi-body",
+  variable: "--font-ejm-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700", "900"],
   display: "swap",
 });
 
-// Kovi's proprietary brand face, self-hosted from public/sites/www-kovi-com-br-a550a92b/shared/fonts.
-const dottiesVanilla = localFont({
-  variable: "--font-kovi-title",
+// Condensed-ish grotesque, closest free match to the display face used on the
+// EJM social pieces.
+const archivo = Archivo({
+  variable: "--font-ejm-title",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
-  src: [
-    {
-      path: "../../public/sites/www-kovi-com-br-a550a92b/shared/fonts/DottiesVanilla-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/sites/www-kovi-com-br-a550a92b/shared/fonts/DottiesVanilla-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/sites/www-kovi-com-br-a550a92b/shared/fonts/DottiesVanilla-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../public/sites/www-kovi-com-br-a550a92b/shared/fonts/DottiesVanilla-Heavy.woff2",
-      weight: "800",
-      style: "normal",
-    },
-  ],
 });
 
 export const metadata: Metadata = {
-  title: "Aluguel de Carro para App em Belo Horizonte | Kovi",
+  title: "EJM Locações | Aluguel de carro para motorista de app em BH",
   description:
-    "Aluguel de carros em Belo Horizonte para motoristas de aplicativo. Conheça os planos Kovi e comece a dirigir.",
+    "Aluguel semanal de carros para motorista de aplicativo em Belo Horizonte. A partir de R$650 por semana com seguro, manutenção, IPVA e troca de óleo inclusos.",
   openGraph: {
-    title: "Aluguel de Carro para App em Belo Horizonte | Kovi",
+    title: "EJM Locações | Aluguel de carro para motorista de app em BH",
+    description:
+      "A partir de R$650 por semana, com seguro, manutenção, IPVA e troca de óleo inclusos. Chama no WhatsApp e pega o carro no mesmo dia.",
+    locale: "pt_BR",
+    type: "website",
   },
   icons: {
-    icon: "/sites/www-kovi-com-br-a550a92b/shared/favicon.png",
+    icon: "/sites/ejm-locacoes/logo-ejm.png",
+    apple: "/sites/ejm-locacoes/logo-ejm.png",
   },
 };
 
@@ -58,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-br"
-      className={`${roboto.variable} ${dottiesVanilla.variable} h-full antialiased`}
+      className={`${roboto.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

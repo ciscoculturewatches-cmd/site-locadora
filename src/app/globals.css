@@ -47,38 +47,39 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* --- Kovi (www.kovi.com.br) design tokens, extracted 2026-09-14 --- */
-  /* Fonts: next/font sets --font-kovi-body (Roboto) and --font-kovi-title (Dotties Vanilla) */
-  --font-kovi-sans: var(--font-kovi-body), Roboto, system-ui, -apple-system,
+  /* --- EJM Locações design tokens ---
+     Sampled from the brand exports in export/ (see scripts/extract-brand-assets-ejm.mjs).
+     The layout geometry is inherited from the reverse-engineered reference; the palette,
+     typography roles and content are EJM's. */
+  /* Fonts: next/font sets --font-ejm-body (Roboto) and --font-ejm-title (display face) */
+  --font-ejm-sans: var(--font-ejm-body), Roboto, system-ui, -apple-system,
     "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-kovi-display: var(--font-kovi-title), "Dotties Vanilla", sans-serif;
+  --font-ejm-display: var(--font-ejm-title), "Archivo", "Roboto", sans-serif;
 
-  --color-kovi-pink: #ff355a;
-  --color-kovi-pink-dark: #8c082e;
-  --color-kovi-ink: #262a30;
-  --color-kovi-ink-alt: #262a33;
-  --color-kovi-text: #252b37;
-  --color-kovi-text-secondary: #454f62;
-  --color-kovi-text-placeholder: #646e82;
-  --color-kovi-surface: #ffffff;
-  --color-kovi-surface-muted: #f8f8f8;
-  --color-kovi-surface-alt: #fbfbfb;
-  --color-kovi-inverse-text: #f8f8f8;
-  --color-kovi-muted: #7f7f7f;
-  --color-kovi-border: #d7dce0;
-  --color-kovi-border-soft: #e9edf2;
-  --color-kovi-border-neutral: #c3cad4;
-  --color-kovi-border-line: #d3d3d3;
-  --color-kovi-border-card: #efe3e5;
-  --color-kovi-surface-cool: #c8ced3;
+  --color-ejm-navy: #0f2440;
+  --color-ejm-navy-deep: #0a1a30;
+  --color-ejm-blue: #1e80d8;
+  --color-ejm-blue-dark: #1668b3;
+  --color-ejm-slate: #39485f;
+  --color-ejm-ink: #0f2440;
+  --color-ejm-body: #33415a;
+  --color-ejm-surface: #ffffff;
+  --color-ejm-surface-light: #eef2f6;
+  --color-ejm-surface-alt: #f7f9fc;
+  --color-ejm-inverse-text: #ffffff;
+  --color-ejm-muted: #6c7c94;
+  --color-ejm-muted-on-navy: #a7c2e0;
+  --color-ejm-border: #dbe3ec;
+  --color-ejm-border-soft: #e6ecf3;
+  --color-ejm-border-strong: #c3cede;
 
-  --radius-kovi-sm: 8px;
-  --radius-kovi-md: 12px;
-  --radius-kovi-lg: 16px;
-  --radius-kovi-pill: 24px;
+  --radius-ejm-sm: 8px;
+  --radius-ejm-md: 12px;
+  --radius-ejm-lg: 16px;
+  --radius-ejm-pill: 24px;
 
-  --shadow-kovi-card: 2px 2px 8px 0 rgb(0 0 0 / 0.25);
-  --shadow-kovi-panel: 0 4px 20px 0 rgb(0 0 0 / 0.15);
+  --shadow-ejm-card: 0 6px 20px 0 rgb(15 36 64 / 0.10);
+  --shadow-ejm-panel: 0 4px 20px 0 rgb(15 36 64 / 0.15);
 }
 
 :root {
@@ -162,48 +163,46 @@
   }
 }
 
-/* --- Kovi page scope ---------------------------------------------------- */
-/* Scoped to .kovi-page so cloning another site later cannot inherit these.  */
+/* --- EJM page scope ----------------------------------------------------- */
+/* Scoped to .ejm-page so anything else added to this app cannot inherit it.  */
 
-/* The original sets scroll-behavior: smooth on <html>; the "Quero alugar meu
-   Kovi" CTA is a plain #escolha-seu-carro anchor that relies on it. */
-html:has(.kovi-page) {
+/* In-page anchors ("Ver carros", "Como alugar") rely on native smooth scroll. */
+html:has(.ejm-page) {
   scroll-behavior: smooth;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html:has(.kovi-page) {
+  html:has(.ejm-page) {
     scroll-behavior: auto;
   }
 }
 
-.kovi-page {
-  font-family: var(--font-kovi-sans);
+.ejm-page {
+  font-family: var(--font-ejm-sans);
   font-size: 16px;
-  color: var(--color-kovi-ink);
-  background-color: var(--color-kovi-surface);
+  color: var(--color-ejm-ink);
+  background-color: var(--color-ejm-surface);
 }
 
-/* Content box measured on the live page: 1180px centred. */
-.kovi-wrapper {
+/* Content box: 1180px centred. */
+.ejm-wrapper {
   width: 100%;
   max-width: 1180px;
   margin-inline: auto;
 }
 
-/* FAQ chevron: closed points right, open points down. The original transitions
-   transform over 0.4s. Written as plain CSS because Tailwind v4 emits an empty
-   rule for the `group-open:` variant in this setup. */
-.kovi-page .kovi-faq-chevron {
+/* FAQ chevron: closed points right, open points down. Written as plain CSS
+   because Tailwind v4 emits an empty rule for the `group-open:` variant here. */
+.ejm-page .ejm-faq-chevron {
   transition: transform 0.4s;
 }
 
-.kovi-page details[open] > summary .kovi-faq-chevron {
+.ejm-page details[open] > summary .ejm-faq-chevron {
   transform: rotate(90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kovi-page .kovi-faq-chevron {
+  .ejm-page .ejm-faq-chevron {
     transition: none;
   }
 }
