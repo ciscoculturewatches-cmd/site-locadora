@@ -49,13 +49,44 @@ Routing defaults:
 
 ## Pre-Flight
 
-1. **Browser automation is required.** Check for available browser MCP tools (Chrome MCP, Playwright MCP, Browserbase MCP, Puppeteer MCP, etc.). Use whichever is available — if multiple exist, prefer Chrome MCP. If none are detected, ask the user which browser tool they have and how to connect it. This skill cannot work without browser automation.
+1. **Browser automation is required.** Check for available browser MCP tools (Chrome DevTools MCP, Claude in Chrome, Playwright MCP, Browserbase MCP, Puppeteer MCP, etc.). Use whichever is available. If none are detected, ask the user which browser tool they have and how to connect it. This skill cannot work without browser automation. See **Browser Tool Binding** below for the concrete call to make at each step.
 2. Parse `the target URL or URLs provided by the user` as one or more URLs. Normalize and validate each URL; if any are invalid, ask the user to correct them before proceeding. For each valid URL, verify it is accessible via your browser MCP tool.
 3. Verify the base project builds: `npm run build`. The Next.js + shadcn/ui + Tailwind v4 scaffold should already be in place. If not, tell the user to set it up first.
 4. Inventory existing routes (`src/app/**/page.tsx`), site component namespaces, research artifacts, screenshots, and public assets. Distinguish the untouched template scaffold from existing cloned or user-authored work.
 5. Write an output plan listing every target URL, `<app-root>`, `<site-key>`, `<page-key>`, destination route, artifact roots, and whether any shared foundation file must change. Resolve collisions across every planned output, same-path query/fragment behavior, and multi-origin layout decisions with the user before editing.
 6. Create only the planned per-page/per-site directories plus `scripts/` if needed. Use unique asset-download script names such as `scripts/download-assets-<site-key>-<page-key>.mjs`; do not overwrite another page's downloader.
 7. For multiple pages from one origin, build the shared foundation once, sequentially, before parallel page work. Optionally confirm whether to run page builders in parallel (recommended if resources allow) or sequentially to avoid overload.
+
+## Browser Tool Binding
+
+Every "use browser MCP" instruction below is tool-agnostic. Bind it to whatever server is actually connected. On this machine the **Claude in Chrome extension is not connected** — use **Chrome DevTools MCP** (`mcp__chrome-devtools__*`).
+
+| Pipeline step | Chrome DevTools MCP call |
+| --- | --- |
+| Open / navigate to a target | `new_page` (first target), then `navigate_page` with `type: "url"`; `list_pages` / `select_page` to switch between original and clone |
+| Full-page screenshot | `take_screenshot` with `fullPage: true` and `filePath: <screenshot-root>/<name>.png` |
+| Section screenshot | `take_snapshot` to get the section's `uid`, then `take_screenshot` with that `uid` (element-scoped — no manual cropping) |
+| Viewport widths (1440 / 768 / 390) | `resize_page`; use `emulate` for device, CPU, or network throttling |
+| CSS extraction (`getComputedStyle` scripts) | `evaluate_script` — paste the extraction script from Phase 3 Step 1 as the function body and read the returned JSON |
+| Asset discovery script | `evaluate_script` with the Phase 2 discovery script; cross-check against `list_network_requests` (filter by resource type) to catch assets not reachable from the DOM |
+| Click sweep | `take_snapshot` for `uid`s, then `click`; `press_key` for keyboard-driven UI |
+| Hover sweep | `hover` on a `uid`, then re-run `evaluate_script` to diff computed styles |
+| Form / input states | `fill`, `fill_form`, `type_text`, `upload_file` |
+| Scroll sweep | **no native scroll action** — drive it with `evaluate_script` (`window.scrollTo({top, behavior})`, `el.scrollIntoView()`) and confirm with `take_screenshot`; see the caveat below |
+| Waiting for state to settle | `wait_for` (text appears) or `evaluate_script` polling; avoid fixed sleeps |
+| Behavior / library detection | `evaluate_script` (check for `.lenis`, `getEventListeners`-style probes, `document.querySelector`) plus `list_console_messages` |
+| Debugging a broken clone | `list_console_messages` / `get_console_message`, `list_network_requests` / `get_network_request` |
+| Visual QA diff (Phase 5) | Two pages via `new_page` (original + `http://localhost:3000/<route>`), `resize_page` to the same width on both, `take_screenshot` with `filePath` for each, then compare the saved images |
+| Perf sanity check (optional) | `lighthouse_audit`, `performance_start_trace` / `performance_stop_trace` |
+| Modal dialogs | `handle_dialog` — dialogs are recoverable here, but still avoid triggering them |
+
+**Known gaps with this binding — flag them rather than silently improvising:**
+
+- **No real wheel/trackpad input.** Scrolling is programmatic only. Sites using Lenis, Locomotive Scroll, or wheel-event-driven parallax may not advance, or may jump instantly past the trigger instead of easing through it. When a scroll-driven behavior refuses to reproduce, extract the mechanism from source (search the page's JS for `IntersectionObserver`, `scroll-timeline`, `animation-timeline`, `ScrollTrigger`) instead of inferring it from screenshots, and say so in `BEHAVIORS.md`.
+- **No GIF recording.** Multi-step interactions can only be documented as a sequence of stills.
+- **No coordinate-based clicking.** Every interaction needs a `uid` from `take_snapshot`; canvas-rendered or shadow-DOM-hidden controls may be unreachable.
+
+If a step needs something not in the table above, stop and tell the user before working around it.
 
 ## Guiding Principles
 
