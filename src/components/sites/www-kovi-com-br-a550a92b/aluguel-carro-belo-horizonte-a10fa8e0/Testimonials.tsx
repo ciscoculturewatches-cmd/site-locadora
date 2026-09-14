@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { KoviTestimonial } from "@/types/www-kovi-com-br-a550a92b";
 
@@ -10,10 +10,8 @@ import { TestimonialCard } from "./TestimonialCard";
 const IMAGE_BASE =
   "/sites/www-kovi-com-br-a550a92b/aluguel-carro-belo-horizonte-a10fa8e0/images";
 
-/** Card width 540 + flex gap 30 — the measured translate step on the original. */
-const STEP_PX = 570;
-/** The original clamps at translateX(-2280px) = index 4. */
-const MAX_INDEX = 4;
+/** Flex gap between cards, both breakpoints. */
+const GAP_PX = 30;
 
 export const KOVI_BH_TESTIMONIALS: KoviTestimonial[] = [
   {
@@ -67,7 +65,36 @@ export const KOVI_BH_TESTIMONIALS: KoviTestimonial[] = [
 ];
 
 export function Testimonials() {
+  const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
+  // Desktop: 540 + 30 = 570 and 2 cards visible (max index 4).
+  // Mobile: the card is min-width 100%, so the step is ~311 and 1 card is
+  // visible (max index 5). Measured rather than hardcoded so both match.
+  const [step, setStep] = useState(570);
+  const [maxIndex, setMaxIndex] = useState(4);
+
+  const measure = useCallback(() => {
+    const track = trackRef.current;
+    const first = track?.firstElementChild as HTMLElement | null;
+    if (!track || !first) return;
+    const nextStep = first.getBoundingClientRect().width + GAP_PX;
+    const inner = track.clientWidth - 40; // the track's 20px side padding
+    const visible = Math.max(1, Math.round(inner / nextStep));
+    setStep(nextStep);
+    setMaxIndex(Math.max(0, KOVI_BH_TESTIMONIALS.length - visible));
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [measure]);
+
+  // Clamp at render rather than in an effect, so a breakpoint change that
+  // lowers maxIndex cannot leave the track scrolled past the last card.
+  const activeIndex = Math.min(index, maxIndex);
 
   return (
     <section className="w-full block">
@@ -76,13 +103,13 @@ export function Testimonials() {
           O que nossos motoristas estão falando do aluguel de carros na Kovi
         </h2>
 
-        <div className="w-full relative overflow-hidden text-center min-[992px]:h-[337.5px]">
+        <div className="w-full relative overflow-hidden text-center">
           <button
             type="button"
-            onClick={() => setIndex((i) => Math.max(0, i - 1))}
+            onClick={() => setIndex(Math.max(0, activeIndex - 1))}
             aria-label="Anterior"
-            className="max-[991px]:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-[22px] h-[34.9062px] cursor-pointer transition-opacity"
-            style={{ opacity: index === 0 ? 0.5 : 1 }}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-[22px] h-[34.9062px] cursor-pointer transition-opacity"
+            style={{ opacity: activeIndex === 0 ? 0.5 : 1 }}
           >
             <Image
               src={`${IMAGE_BASE}/arrow-left.png`}
@@ -93,10 +120,14 @@ export function Testimonials() {
             />
           </button>
 
-          <div className="overflow-hidden mx-[15px] max-[991px]:mx-0">
+          <div className="overflow-hidden mx-[15px]">
             <div
-              className="flex gap-[30px] px-5 py-[10px] transition-transform duration-200 max-[991px]:flex-col max-[991px]:px-0 max-[991px]:py-5 max-[991px]:transform-none"
-              style={{ transform: `translateX(-${index * STEP_PX}px)` }}
+              ref={trackRef}
+              // w-full gives the track a definite width so the cards'
+              // `min-width: 100%` on mobile resolves against it instead of
+              // growing the container.
+              className="flex w-full flex-row gap-[30px] px-5 py-[10px] transition-transform duration-200"
+              style={{ transform: `translateX(-${activeIndex * step}px)` }}
             >
               {KOVI_BH_TESTIMONIALS.map((testimonial) => (
                 <TestimonialCard
@@ -109,10 +140,10 @@ export function Testimonials() {
 
           <button
             type="button"
-            onClick={() => setIndex((i) => Math.min(MAX_INDEX, i + 1))}
+            onClick={() => setIndex(Math.min(maxIndex, activeIndex + 1))}
             aria-label="Próximo"
-            className="max-[991px]:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[22px] h-[34.9062px] cursor-pointer transition-opacity"
-            style={{ opacity: index === MAX_INDEX ? 0.5 : 1 }}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[22px] h-[34.9062px] cursor-pointer transition-opacity"
+            style={{ opacity: activeIndex === maxIndex ? 0.5 : 1 }}
           >
             <Image
               src={`${IMAGE_BASE}/arrow-right.png`}

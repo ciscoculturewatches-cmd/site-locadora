@@ -159,13 +159,16 @@ function MobileDrawer({
         aria-hidden="true"
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-[998] bg-black/50 transition-opacity duration-300",
+          "fixed inset-0 z-[998] bg-black/50 transition-opacity duration-300 min-[992px]:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
+      {/* Hidden above the breakpoint: the original only builds the drawer in
+          mobile mode, and leaving it mounted puts 360px of off-canvas markup
+          into desktop full-page screenshots. */}
       <div
         className={cn(
-          "fixed right-0 top-0 z-[999] h-full w-[360px] max-w-full bg-white transition-transform duration-300",
+          "fixed right-0 top-0 z-[999] h-full w-[360px] max-w-full bg-white transition-transform duration-300 min-[992px]:hidden",
           open ? "translate-x-0" : "translate-x-full",
         )}
         role="dialog"

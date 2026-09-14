@@ -190,3 +190,20 @@ html:has(.kovi-page) {
   max-width: 1180px;
   margin-inline: auto;
 }
+
+/* FAQ chevron: closed points right, open points down. The original transitions
+   transform over 0.4s. Written as plain CSS because Tailwind v4 emits an empty
+   rule for the `group-open:` variant in this setup. */
+.kovi-page .kovi-faq-chevron {
+  transition: transform 0.4s;
+}
+
+.kovi-page details[open] > summary .kovi-faq-chevron {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kovi-page .kovi-faq-chevron {
+    transition: none;
+  }
+}

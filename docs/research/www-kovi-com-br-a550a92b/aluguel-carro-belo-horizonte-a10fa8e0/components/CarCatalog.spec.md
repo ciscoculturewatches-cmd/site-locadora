@@ -53,7 +53,9 @@ The section must carry `id="escolha-seu-carro"` — the HowToRent CTA anchors to
 
 ### Filter `<button>` (pill)
 - borderRadius: `24px`; padding: `8px 24px`
-- fontSize: `20px`; fontWeight: `600`; fontFamily: Dotties Vanilla → `font-kovi-display`
+- fontSize: `20px`; **lineHeight: `24px`**; fontWeight: `600`; fontFamily: Dotties Vanilla → `font-kovi-display`
+- Measured box `106 × 42`. The `24px` line-height is load-bearing: without it the browser's default
+  leading makes the pill ~48px and the whole section drifts.
 - transition: `background-color 0.3s ease-in-out, color 0.3s ease-in-out`
 - **Inactive:** backgroundColor `rgb(255, 255, 255)`; color `rgb(127, 127, 127)`; border `1px solid rgb(127, 127, 127)`
 - **Active:** backgroundColor `rgb(255, 53, 90)`; color `rgb(255, 255, 255)`; border `1px solid rgb(255, 53, 90)`
@@ -62,9 +64,15 @@ The section must carry `id="escolha-seu-carro"` — the HowToRent CTA anchors to
 
 ### Group `Row`
 - display: `flex`; flexWrap: `wrap`; width: `1164px`; margin: `0`; padding: `0`
+- **Measured height per group: `538px`**, composed of
+  `WrapperTitle 39 + its 24 margin-bottom + CardList 435 + nav margin-bottom 40`.
+  The `40px` bottom margin on the `<nav>` and the `39px` fixed title height are easy to miss and
+  together account for 34px per group — see the QA note at the bottom of this file.
 
 ### `WrapperTitle`
 - margin: `0 0 24px`; display: `flex`; fontFamily: `Roboto, sans-serif`; fontSize: `16px`
+- **height: `39px`** — the inner 30px title does not set its own line-height, so pin the block
+  to `39px` rather than letting the font's default leading decide.
 
 ### Group heading `Title > span`
 - fontSize: `30px`; fontWeight: `700`; fontFamily: `Roboto, sans-serif`
@@ -137,3 +145,12 @@ the cards bring theirs.
   may need to scroll horizontally or wrap — it stays on one line at 390px.
 - Content box drops to `374px` at a 390px viewport (16px side padding).
 - **Breakpoint:** `992px` — use `max-[991px]:` / `min-[992px]:` arbitrary variants.
+
+## QA note (2026-09-14)
+
+The first build of this section came out **62px short** (1212 vs 1274). Three causes, all now
+folded into the measurements above:
+
+1. The filter pill had no explicit `line-height`, so it rendered `48.5px` instead of `42px`.
+2. The group-title block was left to size itself and came out `45px` instead of `39px`.
+3. The `<nav>` wrapping each card list was missing its `margin-bottom: 40px`.

@@ -44,3 +44,15 @@ None — every asset resolved.
   this project — revisit before any public deployment.
 - Testimonial thumbnails are YouTube `hqdefault.jpg` stills; the videos themselves are not
   mirrored, the modal links out to youtube.com as the original does.
+
+## Added during visual QA (2026-09-14)
+
+| Local path | Source | Note |
+| --- | --- | --- |
+| `public/sites/www-kovi-com-br-a550a92b/aluguel-carro-belo-horizonte-a10fa8e0/images/play.png` | https://22032859.fs1.hubspotusercontent-na1.net/hubfs/22032859/Kovi-2024/Images/play.png | 763 bytes. Testimonial play-button overlay. |
+
+**Why it was missed on the first pass:** it is painted by
+`.depoimentos-video-youtube .slide-cards .card .video::before` as a `background-image`, so it has no
+`<img>` element and no `background-image` on any real element — the DOM asset sweep in Phase 2
+(which enumerates `<img>`, `<video>` and computed `backgroundImage` on real elements) could not see
+it. Pseudo-element backgrounds need `getComputedStyle(el, '::before')` to surface.

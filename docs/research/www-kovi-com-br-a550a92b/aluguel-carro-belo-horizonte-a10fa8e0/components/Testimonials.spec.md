@@ -73,12 +73,17 @@ than split further.
 - width: `160px`; height: `28.9062px`; maxWidth: `160px`; intrinsic `332 × 60`
 
 ### `.card .content strong` (name)
-- The name is a `<strong>`. Inherits `Roboto`, colour `rgb(33, 37, 41)`.
-- Not separately measured — render at the card's base size with `font-weight: 700`.
-  **Flag this in your report as the one value inferred rather than measured.**
+- fontSize: `24px`; lineHeight: `33.6px`; fontWeight: `600`
+- fontFamily: `"Dotties Vanilla"` → `font-kovi-display`
+- color: `rgb(38, 42, 48)`; margin: `0`
 
-### `.card .content` quote text
-- Inherits `Roboto`, colour `rgb(33, 37, 41)`, base `16px`.
+### `.card .content p` (quote)
+- fontSize: `18px`; lineHeight: `25px`; fontWeight: `400`
+- fontFamily: `"Dotties Vanilla"` → `font-kovi-display`
+- color: `rgb(38, 42, 48)`; margin: `0`; **textAlign: `left`** (the card centres its other content)
+
+> Both measured 2026-09-14 during visual QA. An earlier revision of this spec left them inferred as
+> Roboto at the card's base `16px`, which rendered visibly too small and in the wrong typeface.
 
 ### Arrows `.left` / `.right`
 - width: `22px`; height: `34.9062px`; position: `absolute`
@@ -104,17 +109,25 @@ than split further.
   opacity, and keep the button clickable-but-inert (or set `disabled` and keep opacity 0.5; note
   which you chose).
 
-### Video modal
-- **Trigger:** click on `.video`
-- Opens a modal playing the YouTube video. The original renders a close button
-  (`close-black.png`, 64×64) inside each card.
-- **Build it as:** a fixed-position overlay (`rgba(0,0,0,0.7)` backdrop — that value is used
-  elsewhere on the page), centred 16:9 iframe
-  `https://www.youtube.com/embed/<videoId>?autoplay=1`, and the close button image top-right.
-  Close on backdrop click and on `Escape`.
-- The exact modal geometry was **not** captured from the original. Keep it simple and say so in
-  your report.
-- Do NOT mirror the videos; the iframe points at youtube.com, as the original does.
+### Video playback — INLINE, not a modal
+
+> Corrected 2026-09-14 during visual QA. An earlier revision of this spec described a modal
+> overlay, inferred from the `button.close-modal` present in the markup. That button computes to
+> `display: none` and is never used. The real behaviour is inline replacement, confirmed from the
+> stylesheet rules below.
+
+- **Trigger:** click anywhere on `.video`
+- The card gains class `play-video`; the play overlay hides and a YouTube iframe fills the
+  thumbnail box in place:
+  - `.video` — `border-radius: 8px; height: 200px; min-width: 225px; position: relative`
+  - `.video::before` (the play button) — `content: ""; inset: 0; position: absolute; z-index: 11; cursor: pointer;`
+    `background: url(play.png) 50% center / 60px auto no-repeat`
+  - `.video img.thumb` — `inset: 0; position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; cursor: pointer`
+  - `.video iframe` — `inset: 0; position: absolute; width: 100%; height: 100%; border-radius: 8px; z-index: 12`
+  - `.card.play-video .video::before` — `display: none; z-index: -1`
+- Iframe src: `https://www.youtube.com/embed/<videoId>?autoplay=1`. Videos are not mirrored.
+- **The play-button overlay is easy to miss** — it is a `::before` background image, not an `<img>`,
+  so a DOM-only asset sweep will not surface it. Asset: `play.png`, rendered at `60px` wide, centred.
 
 ### Hover
 No hover rule targets the cards or arrows. Do not add one.
@@ -145,19 +158,33 @@ Each thumbnail's `alt` is `Assistir ao depoimento de <name>`.
 Under `/sites/www-kovi-com-br-a550a92b/aluguel-carro-belo-horizonte-a10fa8e0/images/`:
 the six `testimonial-*.jpg` files (480×360), `stars.png` (332×60, alt `Star`),
 `arrow-left.png` (46×73, alt `Anterior`), `arrow-right.png` (46×73, alt `Próximo`),
-`close-black.png` (64×64, alt `fechar modal`).
+`play.png` (the `::before` play overlay, rendered `60px` wide).
+
+`close-black.png` (64×64) is downloaded but **unused** — its button is `display: none` on the
+original.
 
 ## Text Content (verbatim)
 Section heading: `O que nossos motoristas estão falando do aluguel de carros na Kovi`
 Names and quotes exactly as listed above.
 
 ## Responsive Behavior
-- **Desktop (≥992px):** `flex-direction: row`, 2 cards visible, 540px each, `gap: 30px`,
-  arrows flanking the track.
-- **Below 992px:** `.cards` becomes `flex-direction: column` — the cards **stack vertically**
-  and the horizontal carousel translate no longer applies. Measured stacked card at 390px:
-  width `351px`, height `129px`, `padding: 20px 40px`, `gap: 20px`,
-  `flex-direction: column` on the card itself too. Track height `348px`, `padding: 20px 0`.
-  The arrows remain in the DOM (measured `22 × 35`, absolute) but drive nothing useful once
-  stacked — keep them hidden below the breakpoint and note it.
+
+> Corrected 2026-09-14 during visual QA. An earlier revision claimed the cards stack vertically
+> below 992px and that the arrows should be hidden. That was read off a window that had been
+> resized down from desktop; on a **fresh load at 390px** the track is still `flex-direction: row`.
+
+- **Desktop (≥992px):** track `flex-direction: row`, 2 cards visible, card `540 × 317.5`,
+  `gap: 30px`, `padding: 30px 20px`, card `flex-direction: row`.
+  Step `570px`, max index `4`.
+- **Mobile (<992px):** track **stays `flex-direction: row`** — it remains a carousel, now showing
+  **one card at a time**, and the arrows stay visible (`display: block`).
+  - Card: `min-width: 100%`, `flex-direction: column`, `padding: 30px 15px`, `gap: 20px`
+  - At a 390px viewport: track `321` wide with `padding: 10px 20px`, card `281 × 510.9`
+  - Video box: `height: 250px`, `min-width: 225px` (renders `251 × 250`)
+  - **Step `311px`** (281 + 30), max index `5`
+  - **Type steps down:** name `16px / 24px` (from `24 / 33.6`), quote `14px / 18px`
+    (from `18 / 25`). The star strip stays `160 × 28.9` and the content gap stays `10px`.
+- Because the step differs per breakpoint, derive it at runtime from the first card's measured
+  width + `30`, and compute `maxIndex = 6 - round(trackInnerWidth / step)`. Hardcoding `570`
+  silently breaks mobile.
 - **Breakpoint:** `992px` — use `max-[991px]:` / `min-[992px]:` arbitrary variants.

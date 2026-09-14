@@ -39,8 +39,15 @@
 
 ### `<details>`
 - display: `block`; width: `100%`; padding: `25px 0`; margin: `0`
-- **No border and no border-bottom.** The visual separation between rows comes purely from the
-  `25px` vertical padding. Do not add divider lines.
+- No border on the `<details>` itself. The divider is a **pseudo-element on the wrapper**:
+  `.wrapper-itens-faq::after { content: ""; display: block; height: 1px; width: 100%; background: rgb(230, 230, 230) }`
+- It must **not** add to the row height — each row measures exactly `81.4px` closed
+  (`25 + 31.416 + 25`). Position it absolutely (`position: relative` on the row,
+  `after:absolute after:bottom-0`) rather than letting a block pseudo-element push the box to 82.4px.
+
+> Corrected 2026-09-14 during visual QA. An earlier revision claimed there were no divider lines,
+> because the probe read `border`/`border-bottom` on `<details>`, `<summary>` and the wrapper and
+> found none — it never checked `::after`.
 
 ### `<summary>`
 - display: `flex`; alignItems: `center`; gap: `12px`; cursor: `pointer`; padding: `0`; margin: `0`
@@ -76,7 +83,12 @@
   `[[open]_&]:rotate-90` on the icon, or a tiny CSS rule — either is fine.
 
 ### Default open state
-**Item 1 ships with the `open` attribute. Items 2–14 are closed.** Reproduce that exactly.
+**All 14 items ship CLOSED.** Verified on a fresh load: `details[n].open === false` for every item,
+and `wrapper-itens-faq` measures `81.4px` (the closed height) for all of them.
+
+> Corrected 2026-09-14 during visual QA. An earlier revision of this spec claimed item 1 shipped
+> `open`; that was an artifact of the extraction session's own click sweep having toggled it before
+> the state was read. Each `<details>` lives in its own `.wrapper-itens-faq` div on the original.
 
 ### Hover
 `.faq-section … h6:hover { color: rgb(255, 53, 90) }` exists in the stylesheet but targets an `h6`
@@ -87,7 +99,7 @@ Do not add one.
 
 All 14 items, verbatim. `id` values are `faq-item-1` … `faq-item-14`.
 
-1. **Q:** `Como funciona o aluguel de carro para motorista de aplicativo na Kovi?` *(open by default)*
+1. **Q:** `Como funciona o aluguel de carro para motorista de aplicativo na Kovi?`
    **A:** `Alugar um carro para Uber, 99 ou Indrive na Kovi é simples. Você escolhe o modelo, faz o pagamento da caução e da 1ª semana e já pode rodar. Não exigimos análise de crédito nem cartão, tornando o aluguel acessível mesmo para quem tem restrições.`
 2. **Q:** `Quais são os benefícios do aluguel de carros para aplicativos na Kovi?`
    **A:** `Na Kovi, o aluguel de carro para motorista de aplicativo inclui manutenção, carro reserva, proteção e suporte completo. Além disso, oferecemos preços justos, pagamento flexível por km rodado e agilidade na retirada do veículo.`

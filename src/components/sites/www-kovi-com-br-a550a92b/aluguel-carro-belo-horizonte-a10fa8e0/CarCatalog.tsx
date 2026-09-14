@@ -53,7 +53,7 @@ export function CarCatalog() {
                   className={cn(
                     "rounded-[24px] border font-kovi-display font-semibold transition-colors duration-300 ease-in-out",
                     "max-[991px]:px-3 max-[991px]:py-2 max-[991px]:text-[16px] max-[991px]:leading-[19.2px]",
-                    "min-[992px]:px-6 min-[992px]:py-2 min-[992px]:text-[20px]",
+                    "min-[992px]:px-6 min-[992px]:py-2 min-[992px]:text-[20px] min-[992px]:leading-6",
                     active
                       ? "border-kovi-pink bg-kovi-pink text-white"
                       : "border-[rgb(127,127,127)] bg-white text-[rgb(127,127,127)]",
@@ -71,13 +71,13 @@ export function CarCatalog() {
           <div className="m-0 flex flex-wrap p-0">
             {showZeroKm && (
               <div className="m-0 flex w-full flex-wrap p-0">
-                <div className="mb-6 flex w-full font-kovi-sans text-base">
-                  <div className="m-0 inline-flex items-center gap-[6px] text-[30px] font-bold text-kovi-ink">
+                <div className="mb-6 flex h-[39px] w-full font-kovi-sans text-base">
+                  <div className="m-0 inline-flex h-[39px] items-center gap-[6px] text-[30px] font-bold leading-none text-kovi-ink">
                     <span>Zero Km</span>
                     <TooltipButton text={TOOLTIP_TEXT} />
                   </div>
                 </div>
-                <nav className="w-full">
+                <nav className="mb-10 w-full">
                   <ul className="m-0 flex list-none flex-wrap p-0">
                     {ZERO_KM_CARS.map((car) => (
                       <CarCard key={`${car.model}-${car.badge}`} car={car} />
@@ -88,12 +88,12 @@ export function CarCatalog() {
             )}
             {showSeminovos && (
               <div className="m-0 flex w-full flex-wrap p-0">
-                <div className="mb-6 flex w-full font-kovi-sans text-base">
-                  <div className="m-0 inline-flex items-center gap-[6px] text-[30px] font-bold text-kovi-ink">
+                <div className="mb-6 flex h-[39px] w-full font-kovi-sans text-base">
+                  <div className="m-0 inline-flex h-[39px] items-center gap-[6px] text-[30px] font-bold leading-none text-kovi-ink">
                     <span>Seminovos acima de 10 mil Km</span>
                   </div>
                 </div>
-                <nav className="w-full">
+                <nav className="mb-10 w-full">
                   <ul className="m-0 flex list-none flex-wrap p-0">
                     {SEMINOVOS_CARS.map((car) => (
                       <CarCard key={`${car.model}-${car.badge}`} car={car} />

@@ -8,7 +8,6 @@ const FAQ_ITEMS: KoviFaqItem[] = [
       "Como funciona o aluguel de carro para motorista de aplicativo na Kovi?",
     answer:
       "Alugar um carro para Uber, 99 ou Indrive na Kovi é simples. Você escolhe o modelo, faz o pagamento da caução e da 1ª semana e já pode rodar. Não exigimos análise de crédito nem cartão, tornando o aluguel acessível mesmo para quem tem restrições.",
-    defaultOpen: true,
   },
   {
     id: "faq-item-2",
@@ -101,14 +100,15 @@ export function Faq() {
       </h2>
       <div className="m-0 block w-full p-0 max-[991px]:px-4">
         {FAQ_ITEMS.map((item) => (
+          // The 1px rule under each row is .wrapper-itens-faq::after on the original.
           <details
             key={item.id}
             id={item.id}
             open={item.defaultOpen}
-            className="group m-0 block w-full py-[25px]"
+            className="group relative m-0 block w-full py-[25px] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[rgb(230,230,230)] after:content-['']"
           >
             <summary className="m-0 flex list-none items-center gap-3 p-0 font-kovi-display text-[16px] leading-[22.848px] font-semibold text-kovi-ink-alt [&::-webkit-details-marker]:hidden min-[992px]:text-[22px] min-[992px]:leading-[31.416px] max-[991px]:pl-[15px]">
-              <FaqChevronIcon className="h-[19px] w-[7px] shrink-0 transition-transform duration-[0.4s] group-open:rotate-90" />
+              <FaqChevronIcon className="kovi-faq-chevron h-[19px] w-[7px] shrink-0" />
               <div>{item.question}</div>
             </summary>
             <div className="m-0 block py-0 pt-3 pr-0 pl-5 font-kovi-sans text-[15.2px] leading-[19px] font-normal text-kovi-ink">

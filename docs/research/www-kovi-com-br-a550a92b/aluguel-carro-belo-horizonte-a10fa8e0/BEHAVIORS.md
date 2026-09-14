@@ -63,7 +63,8 @@ A small circular info button sits next to the `Zero Km` group title; its tooltip
 
 ### FAQ — click-driven native `<details>`
 
-- Native `<details>/<summary>`; **item 1 is `open` on load**, the other 13 are closed.
+- Native `<details>/<summary>`; **all 14 ship closed on load** (verified on a fresh navigation —
+  an earlier note here said item 1 was open, which was this sweep's own click leaking into the read).
 - Chevron SVG (7×19, `fill="#FF355A"`) rotates: closed `none` → open `rotate(90deg)`
   (`matrix(0, 1, -1, 0, 0, 0)`), `transition: 0.4s`.
 - Multiple items can be open simultaneously (native behavior, no JS accordion group).
