@@ -46,6 +46,39 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* --- Kovi (www.kovi.com.br) design tokens, extracted 2026-09-14 --- */
+  /* Fonts: next/font sets --font-kovi-body (Roboto) and --font-kovi-title (Dotties Vanilla) */
+  --font-kovi-sans: var(--font-kovi-body), Roboto, system-ui, -apple-system,
+    "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-kovi-display: var(--font-kovi-title), "Dotties Vanilla", sans-serif;
+
+  --color-kovi-pink: #ff355a;
+  --color-kovi-pink-dark: #8c082e;
+  --color-kovi-ink: #262a30;
+  --color-kovi-ink-alt: #262a33;
+  --color-kovi-text: #252b37;
+  --color-kovi-text-secondary: #454f62;
+  --color-kovi-text-placeholder: #646e82;
+  --color-kovi-surface: #ffffff;
+  --color-kovi-surface-muted: #f8f8f8;
+  --color-kovi-surface-alt: #fbfbfb;
+  --color-kovi-inverse-text: #f8f8f8;
+  --color-kovi-muted: #7f7f7f;
+  --color-kovi-border: #d7dce0;
+  --color-kovi-border-soft: #e9edf2;
+  --color-kovi-border-neutral: #c3cad4;
+  --color-kovi-border-line: #d3d3d3;
+  --color-kovi-border-card: #efe3e5;
+  --color-kovi-surface-cool: #c8ced3;
+
+  --radius-kovi-sm: 8px;
+  --radius-kovi-md: 12px;
+  --radius-kovi-lg: 16px;
+  --radius-kovi-pill: 24px;
+
+  --shadow-kovi-card: 2px 2px 8px 0 rgb(0 0 0 / 0.25);
+  --shadow-kovi-panel: 0 4px 20px 0 rgb(0 0 0 / 0.15);
 }
 
 :root {
@@ -127,4 +160,33 @@
   html {
     @apply font-sans;
   }
+}
+
+/* --- Kovi page scope ---------------------------------------------------- */
+/* Scoped to .kovi-page so cloning another site later cannot inherit these.  */
+
+/* The original sets scroll-behavior: smooth on <html>; the "Quero alugar meu
+   Kovi" CTA is a plain #escolha-seu-carro anchor that relies on it. */
+html:has(.kovi-page) {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.kovi-page) {
+    scroll-behavior: auto;
+  }
+}
+
+.kovi-page {
+  font-family: var(--font-kovi-sans);
+  font-size: 16px;
+  color: var(--color-kovi-ink);
+  background-color: var(--color-kovi-surface);
+}
+
+/* Content box measured on the live page: 1180px centred. */
+.kovi-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
 }
