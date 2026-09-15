@@ -6,9 +6,9 @@ export const EJM = {
   instagram: "@ejmlocacoes",
   instagramUrl: "https://www.instagram.com/ejmlocacoes/",
   /** Digits only, in international format, for wa.me links. */
-  whatsappNumber: "5531985090001",
-  /** As printed on their material. */
-  whatsappDisplay: "31 98509-0001",
+  whatsappNumber: "5531975465236",
+  /** Human-readable form used in copy. */
+  whatsappDisplay: "(31) 97546-5236",
 } as const;
 
 /** Builds a wa.me link with an optional pre-filled message. */
