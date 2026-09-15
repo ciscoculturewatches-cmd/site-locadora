@@ -119,4 +119,25 @@ for (const car of CARS) {
   });
 }
 
+// ---- Hero car: Kwid with the headlights on, supplied as a full-frame image on
+// a white background (no crop needed).
+// Body and background are both near-white, so tolerance was tuned by comparing
+// 28 / 60 / 100 on the navy hero: 28 leaves a grey shadow smudge, 100 starts
+// eating the front bumper. 60 clears the shadow with the car intact. ----
+{
+  const { width, height } = await sharp(
+    'export/1-preco-carrossel/08-kwid-farol-aceso.jpg'
+  ).metadata();
+  await cutout({
+    src: 'export/1-preco-carrossel/08-kwid-farol-aceso.jpg',
+    left: 0,
+    top: 0,
+    width,
+    height,
+    tolerance: 60,
+    out: `${OUT}/cars/kwid-hero.png`,
+    resize: 1200,
+  });
+}
+
 console.log('\nDone.');
