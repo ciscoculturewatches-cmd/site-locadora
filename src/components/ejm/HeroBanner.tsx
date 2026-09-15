@@ -22,9 +22,24 @@ export function HeroBanner() {
           </p>
 
           <div className="mt-6 flex flex-wrap items-stretch gap-3">
-            <PriceTag value="650" models="Kwid · Gol" tone="solid" />
-            <PriceTag value="790" models="Argo · Cronos" tone="outline" />
+            <PriceTag
+              oldValue="650"
+              value="250"
+              models="Kwid · Gol"
+              tone="solid"
+            />
+            <PriceTag
+              oldValue="790"
+              value="350"
+              models="Argo · Cronos"
+              tone="outline"
+            />
           </div>
+
+          <p className="mt-3 mb-0 max-w-[560px] font-ejm-sans text-[13px] leading-[18px] text-ejm-muted-on-navy">
+            Preço promocional da 1ª semana, fechando o pacote de 2 meses. Depois
+            da primeira semana, o valor volta para R$650 e R$790 por semana.
+          </p>
 
           <p className="mt-6 mb-0 font-ejm-sans text-[15px] leading-6 text-ejm-muted-on-navy">
             Seguro · Manutenção · IPVA · Troca de óleo{" "}
@@ -70,10 +85,14 @@ export function HeroBanner() {
 }
 
 function PriceTag({
+  oldValue,
   value,
   models,
   tone,
 }: {
+  /** Regular weekly price, shown struck through. */
+  oldValue: string;
+  /** Promotional first-week price. */
   value: string;
   models: string;
   tone: "solid" | "outline";
@@ -83,22 +102,33 @@ function PriceTag({
     <div
       className={
         solid
-          ? "flex items-center gap-3 rounded-[12px] bg-ejm-blue px-4 py-3"
-          : "flex items-center gap-3 rounded-[12px] border border-white/30 px-4 py-3"
+          ? "flex flex-col gap-1 rounded-[12px] bg-ejm-blue px-4 py-3"
+          : "flex flex-col gap-1 rounded-[12px] border border-white/30 px-4 py-3"
       }
     >
-      <span className="font-ejm-display text-[14px] font-bold text-white/80">
-        R$
+      {/* Regular price, struck out in red. aria-label spells it out so the
+          strike-through is not the only thing carrying the meaning. */}
+      <span
+        className="font-ejm-display text-[18px] leading-none font-bold text-white/85 line-through decoration-[#ff3b3b] decoration-[3px]"
+        aria-label={`De R$${oldValue} por semana`}
+      >
+        R${oldValue}
       </span>
-      <span className="font-ejm-display text-[34px] leading-none font-extrabold text-white">
-        {value}
-      </span>
-      <span className="font-ejm-sans text-[12px] leading-[14px] font-semibold text-white/85">
-        por
-        <br />
-        semana
-        <span className="mt-1 block font-normal text-white/70">{models}</span>
-      </span>
+
+      <div className="flex items-center gap-3">
+        <span className="font-ejm-display text-[14px] font-bold text-white/80">
+          R$
+        </span>
+        <span className="font-ejm-display text-[34px] leading-none font-extrabold text-white">
+          {value}
+        </span>
+        <span className="font-ejm-sans text-[12px] leading-[14px] font-semibold text-white/85">
+          na 1ª
+          <br />
+          semana
+          <span className="mt-1 block font-normal text-white/70">{models}</span>
+        </span>
+      </div>
     </div>
   );
 }
