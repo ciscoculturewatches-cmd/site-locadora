@@ -26,6 +26,9 @@ export interface EjmCarCard {
   deliveryNote: string;
   image: string;
   imageAlt: string;
+  /** Intrinsic size of `image` — the cutouts differ in aspect ratio. */
+  imageWidth: number;
+  imageHeight: number;
 }
 
 export interface EjmCarGroup {

@@ -16,6 +16,8 @@ export const EJM_CARS: EjmCarCard[] = [
     deliveryNote: "Aprovou, pega o carro no mesmo dia",
     image: `${CARS_BASE}/kwid.png`,
     imageAlt: "Renault Kwid",
+    imageWidth: 1200,
+    imageHeight: 799,
   },
   {
     model: "Volkswagen Gol",
@@ -27,6 +29,8 @@ export const EJM_CARS: EjmCarCard[] = [
     deliveryNote: "Aprovou, pega o carro no mesmo dia",
     image: `${CARS_BASE}/gol.png`,
     imageAlt: "Volkswagen Gol",
+    imageWidth: 900,
+    imageHeight: 551,
   },
   {
     model: "Fiat Argo",
@@ -38,6 +42,8 @@ export const EJM_CARS: EjmCarCard[] = [
     deliveryNote: "Aprovou, pega o carro no mesmo dia",
     image: `${CARS_BASE}/argo.png`,
     imageAlt: "Fiat Argo",
+    imageWidth: 900,
+    imageHeight: 498,
   },
   {
     model: "Fiat Cronos",
@@ -49,6 +55,8 @@ export const EJM_CARS: EjmCarCard[] = [
     deliveryNote: "Aprovou, pega o carro no mesmo dia",
     image: `${CARS_BASE}/cronos.png`,
     imageAlt: "Fiat Cronos",
+    imageWidth: 900,
+    imageHeight: 482,
   },
 ];
 
@@ -84,8 +92,8 @@ export function CarCard({ car }: { car: EjmCarCard }) {
             <Image
               src={car.image}
               alt={car.imageAlt}
-              width={900}
-              height={567}
+              width={car.imageWidth}
+              height={car.imageHeight}
               className="h-[116px] w-[184px] max-w-full object-contain"
             />
             <div className="flex h-[116px] w-[143.266px] flex-col pt-7 pl-2 text-ejm-ink">

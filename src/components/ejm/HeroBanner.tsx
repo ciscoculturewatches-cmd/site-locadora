@@ -71,7 +71,7 @@ export function HeroBanner() {
 
         <div className="relative w-full max-[991px]:order-first">
           <Image
-            src="/sites/ejm-locacoes/cars/kwid-hero.png"
+            src="/sites/ejm-locacoes/cars/kwid.png"
             alt="Renault Kwid disponível para locação na EJM Locações"
             width={1200}
             height={799}

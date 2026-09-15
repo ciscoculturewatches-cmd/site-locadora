@@ -98,8 +98,11 @@ await cutout({
 // (measured from the row-density profile), so no copy bleeds into the cutout.
 // The Gol export sits on the light background and its car is black, so it takes a
 // much wider tolerance to clear the soft reflection under the wheels.
+// The Kwid is NOT taken from this navy-background export: its black tyres are
+// close enough to the navy that the flood fill leaked into them and punched
+// holes through the wheels, sill and bumper. It comes from the white-background
+// photo below instead.
 const CARS = [
-  { src: 'export/1-preco-carrossel/01-kwid.png', box: [200, 860, 1760, 1110], tolerance: 60, out: 'kwid' },
   { src: 'export/1-preco-carrossel/02-gol.png', box: [230, 950, 1720, 1055], tolerance: 150, out: 'gol' },
   { src: 'export/1-preco-carrossel/03-argo.png', box: [180, 880, 1660, 930], tolerance: 60, out: 'argo' },
   { src: 'export/1-preco-carrossel/04-cronos.png', box: [230, 920, 1630, 840], tolerance: 60, out: 'cronos' },
@@ -119,8 +122,9 @@ for (const car of CARS) {
   });
 }
 
-// ---- Hero car: Kwid with the headlights on, supplied as a full-frame image on
-// a white background (no crop needed).
+// ---- Kwid: headlights on, supplied as a full-frame photo on a white
+// background (no crop needed). Used by both the hero and the catalog card.
+//
 // Body and background are both near-white, so tolerance was tuned by comparing
 // 28 / 60 / 100 on the navy hero: 28 leaves a grey shadow smudge, 100 starts
 // eating the front bumper. 60 clears the shadow with the car intact. ----
@@ -135,7 +139,7 @@ for (const car of CARS) {
     width,
     height,
     tolerance: 60,
-    out: `${OUT}/cars/kwid-hero.png`,
+    out: `${OUT}/cars/kwid.png`,
     resize: 1200,
   });
 }
