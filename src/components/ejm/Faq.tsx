@@ -15,7 +15,7 @@ const FAQ_ITEMS: EjmFaqItem[] = [
     id: "faq-item-2",
     question: "Quanto custa por semana?",
     answer:
-      "São duas faixas: R$650 por semana no Renault Kwid e no Volkswagen Gol, e R$790 por semana no Fiat Argo e no Fiat Cronos.",
+      "São duas faixas: R$650 por semana no Renault Kwid, Volkswagen Gol, Chevrolet Onix, Fiat Mobi e Fiat Uno, e R$790 por semana no Fiat Argo e no Fiat Cronos.",
   },
   {
     id: "faq-item-3",
@@ -51,7 +51,7 @@ const FAQ_ITEMS: EjmFaqItem[] = [
     id: "faq-item-8",
     question: "Quais carros vocês têm disponíveis?",
     answer:
-      "Renault Kwid, Volkswagen Gol, Fiat Argo e Fiat Cronos. A disponibilidade muda conforme a procura, então confirme pelo WhatsApp qual está livre na data que você quer.",
+      "Renault Kwid, Volkswagen Gol, Chevrolet Onix, Fiat Mobi, Fiat Uno, Fiat Argo e Fiat Cronos. A disponibilidade muda conforme a procura, então confirme pelo WhatsApp qual está livre na data que você quer.",
   },
   {
     id: "faq-item-9",
