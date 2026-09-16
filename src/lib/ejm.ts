@@ -3,6 +3,7 @@
 export const EJM = {
   name: "EJM Locações",
   city: "Belo Horizonte - MG",
+  address: "Rua Santa Maria, 425 - Pedra Azul, Contagem - MG",
   instagram: "@ejmlocacoes",
   instagramUrl: "https://www.instagram.com/ejmlocacoes/",
   /** Digits only, in international format, for wa.me links. */

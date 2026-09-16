@@ -96,6 +96,9 @@ export function Footer() {
                 <InstagramIcon className="h-[18px] w-[18px]" />
                 {EJM.instagram}
               </a>
+              <p className="mt-3 mb-0 font-ejm-sans text-[13px] leading-[18px] text-ejm-muted-on-navy">
+                {EJM.address}
+              </p>
             </div>
           </div>
         </div>
