@@ -5,6 +5,12 @@ import type { EjmCarCard } from "@/types/ejm";
 
 const CARS_BASE = "/sites/ejm-locacoes/cars";
 
+// onix.jpg, mobi.jpg, uno.jpg are Wikimedia Commons photos (not real fleet cars):
+//   onix.jpg — "Chevrolet Onix Mk2 RS 2020 in Maldonado" by NaBUru38, CC BY-SA 4.0
+//   mobi.jpg — "Fiat Mobi.jpg" by Diego HC, CC BY-SA 4.0
+//   uno.jpg  — "Fiat Uno Way Plus 2017.jpg" by RL GNZLZ, CC BY-SA 4.0
+// CC BY-SA requires attribution; swap for real fleet photos and drop this note
+// once the client sends their own (see docs/NOVO-CLIENTE.md).
 export const EJM_CARS: EjmCarCard[] = [
   {
     model: "Renault Kwid",
@@ -18,6 +24,48 @@ export const EJM_CARS: EjmCarCard[] = [
     imageAlt: "Renault Kwid",
     imageWidth: 1200,
     imageHeight: 799,
+  },
+  {
+    model: "Chevrolet Onix",
+    categoryNote: "Seguro · Manutenção · IPVA · Óleo inclusos",
+    badge: "Hatch",
+    tier: "tier-650",
+    price: "R$650",
+    period: "semana",
+    deliveryNote: "Aprovou, pega o carro no mesmo dia",
+    image: `${CARS_BASE}/onix.jpg`,
+    imageAlt: "Chevrolet Onix",
+    imageWidth: 900,
+    imageHeight: 520,
+    imageIsPhoto: true,
+  },
+  {
+    model: "Fiat Mobi",
+    categoryNote: "Seguro · Manutenção · IPVA · Óleo inclusos",
+    badge: "Hatch",
+    tier: "tier-650",
+    price: "R$650",
+    period: "semana",
+    deliveryNote: "Aprovou, pega o carro no mesmo dia",
+    image: `${CARS_BASE}/mobi.jpg`,
+    imageAlt: "Fiat Mobi",
+    imageWidth: 900,
+    imageHeight: 520,
+    imageIsPhoto: true,
+  },
+  {
+    model: "Fiat Uno",
+    categoryNote: "Seguro · Manutenção · IPVA · Óleo inclusos",
+    badge: "Hatch",
+    tier: "tier-650",
+    price: "R$650",
+    period: "semana",
+    deliveryNote: "Aprovou, pega o carro no mesmo dia",
+    image: `${CARS_BASE}/uno.jpg`,
+    imageAlt: "Fiat Uno",
+    imageWidth: 900,
+    imageHeight: 520,
+    imageIsPhoto: true,
   },
   {
     model: "Volkswagen Gol",
@@ -94,7 +142,11 @@ export function CarCard({ car }: { car: EjmCarCard }) {
               alt={car.imageAlt}
               width={car.imageWidth}
               height={car.imageHeight}
-              className="h-[116px] w-[184px] max-w-full object-contain"
+              className={
+                car.imageIsPhoto
+                  ? "h-[116px] w-[184px] max-w-full rounded-[10px] object-cover"
+                  : "h-[116px] w-[184px] max-w-full object-contain"
+              }
             />
             <div className="flex h-[116px] w-[143.266px] flex-col pt-7 pl-2 text-ejm-ink">
               <span className="block h-[21px] font-ejm-sans text-[16px] font-normal text-ejm-muted">

@@ -29,6 +29,8 @@ export interface EjmCarCard {
   /** Intrinsic size of `image` — the cutouts differ in aspect ratio. */
   imageWidth: number;
   imageHeight: number;
+  /** True for a real (rectangular) photo instead of a background-removed cutout. */
+  imageIsPhoto?: boolean;
 }
 
 export interface EjmCarGroup {

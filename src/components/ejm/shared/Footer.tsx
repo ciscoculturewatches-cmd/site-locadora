@@ -108,6 +108,19 @@ export function Footer() {
             © {new Date().getFullYear()} {EJM.name} · {EJM.city} · WhatsApp{" "}
             {EJM.whatsappDisplay}
           </p>
+          <p className="m-0 mt-2 font-ejm-sans text-[11px] leading-[16px] text-ejm-muted-on-navy/70">
+            Fotos do Onix, Mobi e Uno: NaBUru38, Diego HC e RL GNZLZ via
+            Wikimedia Commons, licença{" "}
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener"
+              className="underline hover:text-white"
+            >
+              CC BY-SA 4.0
+            </a>
+            .
+          </p>
         </div>
       </div>
     </footer>
